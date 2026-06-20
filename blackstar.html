@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블랙스타 BLACKSTAR ★ ブラックスター — Animation Studio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gifshot/0.3.2/gifshot.min.js"></script>
+<style>
+/* ============================================================
+   BLACKSTAR ★ — Windows 98/XP Retro Animation Studio
+   블랙스타 애니메이션 스튜디오
+   ============================================================ */
+
+:root {
+  --win-bg: #d4d0c8;
+  --win-dark: #808080;
+  --win-darker: #404040;
+  --win-light: #f0efe8;
+  --win-white: #ffffff;
+  --win-border-light: #ffffff;
+  --win-border-dark: #808080;
+  --win-border-darker: #404040;
+  --win-shadow: #404040;
+  --titlebar-start: #0a246a;
+  --titlebar-end: #a6caf0;
+  --titlebar-inactive: #7b7b7b;
+  --btn-face: #d4d0c8;
+  --btn-highlight: #ffffff;
+  --btn-shadow: #808080;
+  --btn-dark-shadow: #404040;
+  --accent: #000080;
+  --accent2: #800000;
+  --select-blue: #316ac5;
+  --font-main: 'MS Sans Serif', 'Tahoma', 'Arial', sans-serif;
+  --font-title: 'Tahoma', 'MS Sans Serif', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #3a6ea5 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAFklEQVQImWNgYGD4z8BQDwAEgAF/QualIQAAAABJRU5ErkJggg==") repeat;
+  font-family: var(--font-main);
+  font-size: 11px;
+  user-select: none;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Window Chrome ── */
+.window {
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  background: var(--win-bg);
+  box-shadow: 1px 1px 0 var(--btn-shadow) inset, -1px -1px 0 var(--btn-shadow) inset;
+}
+
+.window-inner {
+  border: 1px solid;
+  border-color: var(--win-white) var(--win-dark) var(--win-dark) var(--win-white);
+  padding: 2px;
+}
+
+.titlebar {
+  background: linear-gradient(to right, var(--titlebar-start), var(--titlebar-end));
+  color: white;
+  padding: 3px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: default;
+}
+
+.titlebar-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-shadow: 1px 1px 0 rgba(0,0,50,0.5);
+  letter-spacing: 0.3px;
+}
+
+.titlebar-title .star { color: #ffd700; font-size: 13px; }
+.titlebar-title .ko { font-size: 10px; opacity: 0.9; }
+
+.titlebar-btns { display: flex; gap: 2px; }
+
+.win-btn {
+  width: 16px; height: 14px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  font-size: 9px; font-weight: bold;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: #000;
+}
+.win-btn:active {
+  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
+}
+
+/* ── Raised / Sunken buttons ── */
+.btn {
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  padding: 2px 6px;
+  font-family: var(--font-main);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #000;
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.btn:active, .btn.active {
+  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
+  padding: 3px 5px 1px 7px;
+}
+.btn:disabled { color: var(--btn-shadow); text-shadow: 1px 1px 0 var(--btn-highlight); cursor: default; }
+
+.btn-tool {
+  width: 100%; padding: 4px 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  font-size: 9px; text-align: center;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+}
+.btn-tool .tool-icon { font-size: 16px; line-height: 1; }
+.btn-tool .tool-label { font-size: 8px; color: #333; }
+.btn-tool.active {
+  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
+  background: #c0bdb5;
+}
+
+/* ── Inset / Group box ── */
+.groupbox {
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+  padding: 12px 4px 4px 4px;
+  position: relative;
+  margin: 4px 2px;
+}
+.groupbox-label {
+  position: absolute; top: -6px; left: 6px;
+  background: var(--win-bg);
+  padding: 0 2px;
+  font-size: 10px;
+}
+
+.sunken {
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+  background: var(--win-white);
+}
+
+/* ── Input / Select ── */
+input[type="number"], input[type="text"], select {
+  background: white;
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+  font-family: var(--font-main);
+  font-size: 11px;
+  padding: 1px 3px;
+  color: #000;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 14px;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--btn-shadow);
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px; height: 20px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  margin-top: -8px;
+  cursor: pointer;
+}
+input[type="checkbox"] { cursor: pointer; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 16px; height: 16px; }
+::-webkit-scrollbar-track { background: var(--win-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+}
+::-webkit-scrollbar-button {
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  height: 16px; width: 16px;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+#app {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* App titlebar */
+#app-titlebar {
+  background: linear-gradient(to right, #0a246a 60%, #a6caf0 100%);
+  color: white; padding: 4px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+  font-weight: bold; font-size: 12px;
+}
+#app-titlebar .app-title {
+  display: flex; align-items: center; gap: 8px;
+}
+#app-titlebar .star-icon {
+  font-size: 18px; color: #ffd700;
+  text-shadow: 0 0 4px #ffa500;
+}
+#app-titlebar .title-text { letter-spacing: 1px; }
+#app-titlebar .subtitle { font-size: 10px; opacity: 0.8; font-weight: normal; }
+
+/* Top toolbar */
+#top-toolbar {
+  background: var(--win-bg);
+  border-bottom: 2px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight);
+  padding: 2px 4px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 2px;
+  flex-shrink: 0;
+}
+
+.toolbar-sep {
+  width: 2px; height: 22px; margin: 0 3px;
+  border-left: 1px solid var(--btn-shadow);
+  border-right: 1px solid var(--btn-highlight);
+}
+
+/* Main workspace */
+#workspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left toolbar */
+#left-toolbar {
+  width: 56px;
+  background: var(--win-bg);
+  border-right: 2px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight);
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 4px 2px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+/* Center panel */
+#center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #3a6ea5;
+  position: relative;
+}
+
+/* Canvas area */
+#canvas-area {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 16px;
+}
+
+#canvas-wrapper {
+  position: relative;
+  box-shadow: 3px 3px 0 #000, -1px -1px 0 #888;
+  cursor: crosshair;
+}
+
+#canvas-wrapper canvas {
+  position: absolute; top: 0; left: 0;
+  display: block;
+}
+#canvas-wrapper canvas:last-child {
+  position: relative;
+}
+
+/* Right side panel */
+#right-panel {
+  width: 180px;
+  background: var(--win-bg);
+  border-left: 2px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight);
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  padding: 4px;
+  gap: 4px;
+}
+
+/* Timeline */
+#timeline-area {
+  height: 120px;
+  background: var(--win-bg);
+  border-top: 2px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#timeline-controls {
+  display: flex; align-items: center; gap: 4px;
+  padding: 3px 6px;
+  border-bottom: 1px solid var(--btn-shadow);
+  flex-shrink: 0;
+}
+
+#timeline-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 4px 6px;
+  gap: 4px;
+  background: #c0bdb5;
+  border-top: 1px solid var(--btn-shadow);
+}
+
+.frame-thumb {
+  flex-shrink: 0;
+  width: 64px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer;
+  padding: 2px;
+}
+.frame-thumb canvas {
+  border: 2px solid var(--btn-shadow);
+  background: white;
+  display: block;
+}
+.frame-thumb.selected canvas {
+  border-color: var(--select-blue);
+  box-shadow: 0 0 0 1px var(--select-blue);
+}
+.frame-thumb .thumb-label {
+  font-size: 9px; color: #333;
+  background: var(--win-bg);
+  padding: 0 2px;
+}
+.frame-thumb.drag-over canvas {
+  border-color: #ff6600;
+}
+
+/* Status bar */
+#statusbar {
+  background: var(--win-bg);
+  border-top: 2px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight);
+  display: flex; align-items: center; gap: 2px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.status-pane {
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+  padding: 1px 6px;
+  min-width: 80px;
+}
+
+/* ── Color Palette ── */
+#palette {
+  display: grid;
+  grid-template-columns: repeat(8, 16px);
+  gap: 1px;
+}
+.pal-color {
+  width: 16px; height: 16px;
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  cursor: pointer;
+}
+.pal-color:hover { outline: 1px solid #fff; }
+
+#color-preview {
+  display: flex; gap: 2px; align-items: center; margin-left: 4px;
+}
+#fg-color, #bg-color {
+  width: 20px; height: 20px;
+  border: 1px solid;
+  border-color: var(--btn-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-shadow);
+  cursor: pointer;
+}
+#bg-color { margin-top: -8px; margin-left: -8px; z-index: 0; }
+#fg-color { z-index: 1; position: relative; }
+
+/* ── Preview window ── */
+#preview-window {
+  position: absolute;
+  top: 8px; right: 8px;
+  z-index: 100;
+  background: var(--win-bg);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  box-shadow: 2px 2px 0 #000;
+  cursor: move;
+  min-width: 110px;
+}
+#preview-window .titlebar { font-size: 9px; padding: 2px 4px; }
+#preview-canvas { display: block; background: white; }
+
+/* ── Layer panel ── */
+.layer-item {
+  display: flex; align-items: center; gap: 3px;
+  padding: 3px 4px;
+  border-bottom: 1px solid var(--btn-shadow);
+  cursor: pointer;
+  font-size: 10px;
+}
+.layer-item.active { background: var(--select-blue); color: white; }
+.layer-reorder { display: flex; flex-direction: column; gap: 0; margin-left: 2px; }
+.layer-order-btn {
+  font-size: 7px; line-height: 1; padding: 0 2px;
+  background: var(--btn-face);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  cursor: pointer; color: #000;
+  width: 14px; height: 9px;
+}
+.layer-order-btn:active {
+  border-color: var(--btn-dark-shadow) var(--btn-highlight) var(--btn-highlight) var(--btn-dark-shadow);
+}
+.layer-order-btn:disabled {
+  color: var(--btn-shadow); cursor: default;
+}
+.layer-item.active .layer-order-btn { color: #000; }
+.layer-vis { font-size: 10px; cursor: pointer; padding: 0 2px; }
+.layer-name { flex: 1; font-size: 10px; }
+.layer-opacity {
+  width: 30px; font-size: 9px;
+  background: transparent; border: none; color: inherit;
+}
+
+/* ── Onion skin ── */
+#onion-controls { display: flex; flex-direction: column; gap: 3px; padding: 2px; }
+
+/* ── Export modal ── */
+#export-modal {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  align-items: center; justify-content: center;
+}
+#export-modal.show { display: flex; }
+#export-dialog {
+  background: var(--win-bg);
+  border: 2px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) var(--btn-dark-shadow) var(--btn-highlight);
+  box-shadow: 4px 4px 0 #000;
+  min-width: 320px;
+}
+#export-progress {
+  display: none;
+  margin-top: 8px;
+  background: white;
+  height: 14px;
+  border: 1px solid var(--btn-shadow);
+  position: relative;
+  overflow: hidden;
+}
+#export-progress-bar {
+  height: 100%;
+  background: var(--select-blue);
+  transition: width 0.1s;
+}
+#export-progress-text {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: white;
+  mix-blend-mode: difference;
+}
+
+/* ── Grid overlay ── */
+#grid-canvas {
+  position: absolute; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ── Cute decorations ── */
+.pixel-star {
+  display: inline-block;
+  color: #ffd700;
+  text-shadow: 0 0 3px #ffa500;
+  animation: twinkle 2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.tooltip {
+  position: relative;
+}
+.tooltip:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%; transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 2px 6px;
+  font-size: 9px;
+  white-space: nowrap;
+  z-index: 200;
+  pointer-events: none;
+  border: 1px solid #666;
+}
+
+/* Separator in groupbox */
+.h-sep {
+  height: 2px;
+  border-top: 1px solid var(--btn-shadow);
+  border-bottom: 1px solid var(--btn-highlight);
+  margin: 3px 0;
+}
+
+/* Brush preview dot */
+#brush-preview-dot {
+  width: 30px; height: 30px;
+  border: 1px solid var(--btn-shadow);
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+/* Resize handle */
+.resize-handle {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 16px; height: 16px;
+  cursor: se-resize;
+  font-size: 12px;
+  color: var(--btn-shadow);
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  padding: 1px;
+}
+
+/* Top tabs */
+.tab-btn {
+  background: var(--win-bg);
+  border: 1px solid;
+  border-color: var(--btn-highlight) var(--btn-dark-shadow) transparent var(--btn-highlight);
+  border-bottom: none;
+  padding: 2px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  position: relative; top: 1px;
+}
+.tab-btn.active {
+  background: var(--win-light);
+  z-index: 1;
+  border-bottom: 1px solid var(--win-light);
+}
+
+/* Playhead indicator */
+#playhead {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: red;
+  pointer-events: none;
+  z-index: 10;
+  transition: left 0.05s;
+}
+
+/* Toast notification */
+#toast {
+  position: fixed;
+  bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: #333; color: white;
+  padding: 6px 16px;
+  font-size: 11px;
+  border: 1px solid #888;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+#toast.show { opacity: 1; }
+
+/* Checkerboard for transparency */
+.checker {
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Export Modal -->
+<div id="export-modal">
+  <div id="export-dialog" class="window">
+    <div class="titlebar">
+      <span class="titlebar-title">
+        <span class="star">★</span> Export Animation — 내보내기
+      </span>
+      <div class="titlebar-btns">
+        <button class="win-btn" onclick="closeExport()">✕</button>
+      </div>
+    </div>
+    <div style="padding:12px; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:11px; font-weight:bold; margin-bottom:4px;">🎬 Export Format / 내보내기 형식</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn" onclick="exportGIF()" style="flex:1; min-width:90px;">🎞 GIF<br><span style="font-size:8px">gifshot</span></button>
+        <button class="btn" onclick="exportPNG()" style="flex:1; min-width:90px;">🖼 PNG Seq<br><span style="font-size:8px">ZIP archive</span></button>
+        <button class="btn" onclick="exportSpriteSheet()" style="flex:1; min-width:90px;">📋 Sprite Sheet<br><span style="font-size:8px">PNG grid</span></button>
+        <button class="btn" onclick="exportWebM()" style="flex:1; min-width:90px;">🎥 WebM<br><span style="font-size:8px">Video</span></button>
+      </div>
+      <div class="h-sep"></div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:10px;">
+        <label>Scale:</label>
+        <select id="export-scale" style="width:60px;">
+          <option value="1">1×</option>
+          <option value="2" selected>2×</option>
+          <option value="3">3×</option>
+          <option value="4">4×</option>
+        </select>
+        <label>FPS:</label>
+        <input type="number" id="export-fps" value="12" min="1" max="60" style="width:40px;">
+        <label><input type="checkbox" id="export-loop" checked> Loop</label>
+      </div>
+      <div id="export-progress">
+        <div id="export-progress-bar" style="width:0%"></div>
+        <div id="export-progress-text">0%</div>
+      </div>
+      <div id="export-status" style="font-size:9px; color:#666; min-height:14px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:4px; margin-top:4px;">
+        <button class="btn" onclick="closeExport()">닫기 Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- App title bar -->
+  <div id="app-titlebar">
+    <div class="app-title">
+      <span class="star-icon">★</span>
+      <span class="title-text">BLACKSTAR 블랙스타 ブラックスター</span>
+      <span class="subtitle">— 프레임 애니메이션 스튜디오 ★ Frame Animation Studio</span>
+    </div>
+    <div style="display:flex; gap:6px; align-items:center; font-size:10px;">
+      <span style="opacity:0.7">v1.0 ★</span>
+    </div>
+  </div>
+
+  <!-- Top toolbar -->
+  <div id="top-toolbar">
+    <!-- File ops -->
+    <button class="btn tooltip" data-tip="New Project" onclick="newProject()">📄 새로운</button>
+    <button class="btn tooltip" data-tip="Open file" onclick="openFile()">📂 열기</button>
+    <button class="btn tooltip" data-tip="Save as JSON" onclick="saveProject()">💾 저장</button>
+    <div class="toolbar-sep"></div>
+
+    <!-- Color palette -->
+    <div style="display:flex; align-items:center; gap:3px;">
+      <div id="palette"></div>
+      <div id="color-preview" style="position:relative; width:34px; height:28px;">
+        <div id="bg-color" class="tooltip" data-tip="BG Color (right-click)" style="position:absolute; bottom:0; right:0;"></div>
+        <div id="fg-color" class="tooltip" data-tip="FG Color (click)" onclick="pickFGColor()"></div>
+        <input type="color" id="fg-picker" style="position:absolute;opacity:0;width:0;height:0;" oninput="setFGColor(this.value)">
+        <input type="color" id="bg-picker" style="position:absolute;opacity:0;width:0;height:0;" oninput="setBGColor(this.value)">
+      </div>
+    </div>
+    <div class="toolbar-sep"></div>
+
+    <!-- Brush size -->
+    <div style="display:flex; align-items:center; gap:3px; font-size:10px;">
+      <span>Size:</span>
+      <input type="range" id="brush-size" min="1" max="64" value="4" style="width:60px;" oninput="updateBrushSize(this.value)">
+      <input type="number" id="brush-size-num" value="4" min="1" max="64" style="width:34px;" oninput="updateBrushSize(this.value)">
+      <div id="brush-preview-dot"></div>
+    </div>
+
+    <!-- Opacity -->
+    <div style="display:flex; align-items:center; gap:3px; font-size:10px;">
+      <span>α:</span>
+      <input type="range" id="opacity-slider" min="1" max="100" value="100" style="width:50px;" oninput="updateOpacity(this.value)">
+      <span id="opacity-val">100</span>
+    </div>
+    <div class="toolbar-sep"></div>
+
+    <!-- Brush shape -->
+    <div style="font-size:10px;">
+      <select id="brush-shape" onchange="updateBrushShape(this.value)" style="font-size:10px;">
+        <option value="round">⭕ Round</option>
+        <option value="square">⬛ Square</option>
+      </select>
+    </div>
+
+    <!-- Brush presets -->
+    <div style="font-size:10px; display:flex; gap:2px;">
+      <button class="btn tooltip active" id="preset-pen" data-tip="Pen" onclick="setBrushPreset('pen')">🖊 Pen</button>
+      <button class="btn tooltip" id="preset-pencil" data-tip="Sketch Pencil" onclick="setBrushPreset('pencil')">✏ Pencil</button>
+      <button class="btn tooltip" id="preset-airbrush" data-tip="Airbrush" onclick="setBrushPreset('airbrush')">💨 Air</button>
+    </div>
+    <div class="toolbar-sep"></div>
+
+    <!-- Line style -->
+    <div style="font-size:10px;">
+      <select id="line-style" style="font-size:10px;">
+        <option value="solid">━ Solid</option>
+        <option value="dashed">┅ Dashed</option>
+        <option value="dotted">┄ Dotted</option>
+      </select>
+    </div>
+
+    <!-- Fill -->
+    <label style="font-size:10px; display:flex; align-items:center; gap:2px;">
+      <input type="checkbox" id="fill-toggle"> Fill
+    </label>
+    <div class="toolbar-sep"></div>
+
+    <!-- Grid / Lightbox -->
+    <button class="btn tooltip" id="btn-grid" data-tip="Toggle Grid" onclick="toggleGrid()">⊞ Grid</button>
+    <button class="btn tooltip" id="btn-lightbox" data-tip="Lightbox mode" onclick="toggleLightbox()">💡 Light</button>
+    <div class="toolbar-sep"></div>
+
+    <!-- Transform -->
+    <button class="btn tooltip" data-tip="Rotate 90° CW" onclick="rotateFrame()">↷ 90°</button>
+    <button class="btn tooltip" data-tip="Flip Horizontal" onclick="flipFrame('h')">↔ Flip H</button>
+    <button class="btn tooltip" data-tip="Flip Vertical" onclick="flipFrame('v')">↕ Flip V</button>
+    <button class="btn tooltip" data-tip="Clear Current Layer" onclick="clearLayer()" style="color:#800000;">🗑 Clear</button>
+    <div class="toolbar-sep"></div>
+
+    <!-- Undo/Redo -->
+    <button class="btn tooltip" id="btn-undo" data-tip="Undo (Ctrl+Z)" onclick="undo()">↩ Undo</button>
+    <button class="btn tooltip" id="btn-redo" data-tip="Redo (Ctrl+Y)" onclick="redo()">↪ Redo</button>
+    <div class="toolbar-sep"></div>
+
+    <!-- Export -->
+    <button class="btn tooltip" data-tip="Export animation" onclick="openExport()" style="font-weight:bold; color:#000080;">📤 Export</button>
+
+    <!-- Canvas size -->
+    <div style="font-size:10px; display:flex; align-items:center; gap:2px; margin-left:4px;">
+      <input type="number" id="canvas-w" value="500" min="100" max="1920" style="width:44px;" title="Canvas Width">
+      ×
+      <input type="number" id="canvas-h" value="380" min="100" max="1080" style="width:44px;" title="Canvas Height">
+      <button class="btn" onclick="resizeCanvas()" title="Resize Canvas">⤡</button>
+    </div>
+
+    <!-- Zoom -->
+    <div style="font-size:10px; display:flex; align-items:center; gap:2px; margin-left:4px;">
+      <button class="btn" onclick="zoomIn()">+</button>
+      <span id="zoom-label">100%</span>
+      <button class="btn" onclick="zoomOut()">−</button>
+      <button class="btn" onclick="zoomReset()" title="Reset zoom">⊙</button>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div id="workspace">
+
+    <!-- Left tool palette -->
+    <div id="left-toolbar">
+      <button class="btn btn-tool active tooltip" id="tool-pencil" data-tip="Pencil (P)" onclick="setTool('pencil')">
+        <span class="tool-icon">✏</span>
+        <span class="tool-label">Pencil</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-eraser" data-tip="Eraser (E)" onclick="setTool('eraser')">
+        <span class="tool-icon">🧽</span>
+        <span class="tool-label">Eraser</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-line" data-tip="Line (L)" onclick="setTool('line')">
+        <span class="tool-icon">╱</span>
+        <span class="tool-label">Line</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-rect" data-tip="Rectangle (R)" onclick="setTool('rect')">
+        <span class="tool-icon">▭</span>
+        <span class="tool-label">Rect</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-circle" data-tip="Circle (C)" onclick="setTool('circle')">
+        <span class="tool-icon">⬭</span>
+        <span class="tool-label">Circle</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-fill" data-tip="Bucket Fill (F)" onclick="setTool('fill')">
+        <span class="tool-icon">🪣</span>
+        <span class="tool-label">Fill</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-text" data-tip="Text (T)" onclick="setTool('text')">
+        <span class="tool-icon">A</span>
+        <span class="tool-label">Text</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-eyedrop" data-tip="Eyedropper (I)" onclick="setTool('eyedrop')">
+        <span class="tool-icon">💉</span>
+        <span class="tool-label">Pick</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-cut" data-tip="Selection/Cut (S)" onclick="setTool('cut')">
+        <span class="tool-icon">✂</span>
+        <span class="tool-label">Cut</span>
+      </button>
+      <button class="btn btn-tool tooltip" id="tool-move" data-tip="Move layer" onclick="setTool('move')">
+        <span class="tool-icon">✥</span>
+        <span class="tool-label">Move</span>
+      </button>
+    </div>
+
+    <!-- Center canvas area -->
+    <div id="center-panel">
+      <div id="canvas-area">
+        <div id="canvas-wrapper">
+          <!-- Canvases injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div id="right-panel">
+
+      <!-- Preview window (floating inside right panel) -->
+      <div class="groupbox">
+        <span class="groupbox-label">🎬 Preview プレビュー</span>
+        <canvas id="preview-canvas" width="160" height="120" class="checker" style="width:100%; border:1px solid var(--btn-shadow);"></canvas>
+        <div style="display:flex; justify-content:center; gap:2px; margin-top:3px;">
+          <button class="btn" id="play-btn" onclick="togglePlay()" style="font-size:16px; padding:2px 8px;">▶</button>
+          <button class="btn" onclick="prevFrame()" style="font-size:11px;">◀</button>
+          <button class="btn" onclick="nextFrame()" style="font-size:11px;">▶</button>
+        </div>
+      </div>
+
+      <!-- Onion skin -->
+      <div class="groupbox">
+        <span class="groupbox-label">🧅 Onion 어니언</span>
+        <div id="onion-controls">
+          <label style="display:flex; align-items:center; gap:3px; font-size:10px;">
+            <input type="checkbox" id="onion-toggle" onchange="updateOnion()"> Enable
+          </label>
+          <label style="font-size:10px; display:flex; align-items:center; gap:3px;">
+            Prev <input type="number" id="onion-prev" value="2" min="0" max="5" style="width:30px;" onchange="updateOnion()">
+          </label>
+          <label style="font-size:10px; display:flex; align-items:center; gap:3px;">
+            Next <input type="number" id="onion-next" value="1" min="0" max="5" style="width:30px;" onchange="updateOnion()">
+          </label>
+          <label style="font-size:10px; display:flex; align-items:center; gap:3px;">
+            Opacity <input type="range" id="onion-opacity" min="5" max="80" value="30" style="width:60px;" oninput="updateOnion()">
+          </label>
+        </div>
+      </div>
+
+      <!-- Layers -->
+      <div class="groupbox" style="flex:1;">
+        <span class="groupbox-label">🗂 Layers 레이어</span>
+        <div id="layer-list" style="display:flex; flex-direction:column-reverse;"></div>
+        <div style="display:flex; gap:2px; margin-top:4px;">
+          <button class="btn" onclick="addLayer()" style="flex:1; font-size:9px;">+ Add</button>
+          <button class="btn" onclick="deleteLayer()" style="flex:1; font-size:9px;">- Del</button>
+          <button class="btn" onclick="mergeLayerDown()" style="flex:1; font-size:9px;">↓ Merge</button>
+        </div>
+      </div>
+
+      <!-- Canvas info -->
+      <div style="font-size:9px; color:#555; padding:2px 4px;">
+        <div>💡 Ctrl+Z Undo | Ctrl+Y Redo</div>
+        <div>🖱 Right-click = BG color</div>
+        <div>🔍 Scroll = Zoom</div>
+        <div style="margin-top:2px; color:#800000; font-weight:bold;">★ 블랙스타 ★ BlackStar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div id="timeline-area">
+    <div id="timeline-controls">
+      <button class="btn" onclick="togglePlay()" id="tl-play-btn" style="font-size:14px; padding:1px 6px;">▶</button>
+      <button class="btn" onclick="stopPlay()" style="font-size:14px; padding:1px 6px;">⏹</button>
+      <div class="toolbar-sep"></div>
+      <label style="font-size:10px; display:flex; align-items:center; gap:3px;">
+        FPS <input type="number" id="fps-input" value="12" min="1" max="60" style="width:36px;" onchange="updateFPS(this.value)">
+      </label>
+      <label style="font-size:10px; display:flex; align-items:center; gap:3px;">
+        <input type="checkbox" id="loop-toggle" checked> Loop
+      </label>
+      <div class="toolbar-sep"></div>
+      <button class="btn tooltip" data-tip="Add frame" onclick="addFrame()">＋ Frame</button>
+      <button class="btn tooltip" data-tip="Duplicate frame" onclick="duplicateFrame()">⧉ Dupe</button>
+      <button class="btn tooltip" data-tip="Delete frame" onclick="deleteFrame()">✕ Del</button>
+      <button class="btn tooltip" data-tip="Insert blank before" onclick="insertFrameBefore()">←+ Insert</button>
+      <div class="toolbar-sep"></div>
+      <span style="font-size:10px; color:#555;">Frame: <strong id="frame-counter">1 / 1</strong></span>
+      <span style="font-size:10px; color:#555; margin-left:6px;">Duration: <strong id="duration-label">0.0s</strong></span>
+    </div>
+    <div id="timeline-scroll">
+      <!-- Frame thumbnails injected here -->
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div id="statusbar">
+    <div class="status-pane" id="status-tool">Tool: Pencil ✏</div>
+    <div class="status-pane" id="status-coords">X: 0, Y: 0</div>
+    <div class="status-pane" id="status-frame">Frame: 1</div>
+    <div class="status-pane" id="status-layer">Layer: 1</div>
+    <div class="status-pane" id="status-size">500 × 380</div>
+    <div class="status-pane" id="status-undo">History: 0</div>
+    <div class="status-pane" style="flex:1; text-align:right; color:#0a246a; font-weight:bold;">
+      블랙스타 BLACKSTAR <span class="pixel-star">★</span> ブラックスター — Animation Studio v1.0
+    </div>
+  </div>
+</div>
+
+<!-- Hidden text input for text tool -->
+<input type="text" id="text-input" style="position:fixed; opacity:0; pointer-events:none; width:1px; height:1px;">
+
+<script>
+/* ============================================================
+   BLACKSTAR ★ Animation Studio
+   블랙스타 — Complete JavaScript Engine
+   ============================================================ */
+
+// ── State ─────────────────────────────────────────────────────
+const NUM_LAYERS = 5;
+let canvasW = 500, canvasH = 380;
+let frames = [];       // Array of {layers: [ImageData,...]}
+let currentFrame = 0;
+let currentLayer = 0;
+let currentTool = 'pencil';
+let fgColor = '#000000';
+let bgColor = '#ffffff';
+let brushSize = 4;
+let opacity = 1.0;
+let brushShape = 'round';
+let brushPreset = 'pen';
+let fillEnabled = false;
+let gridVisible = false;
+let gridSize = 16;
+let lightboxMode = false;
+let onionEnabled = false;
+let onionPrev = 2;
+let onionNext = 1;
+let onionOpacity = 0.3;
+let fps = 12;
+let isPlaying = false;
+let playInterval = null;
+let zoom = 1.0;
+let layerVisibility = [true, true, true, true, true];
+let layerOpacity = [100, 100, 100, 100, 100];
+let layerNames = ['Layer 5','Layer 4','Layer 3','Layer 2','Layer 1'];
+
+// Undo/Redo
+let history = [];
+let historyIndex = -1;
+const MAX_HISTORY = 50;
+
+// Drawing state
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+let startX = 0, startY = 0;
+let drawingSnapshot = null; // for shape preview
+let selectionRect = null;   // for cut tool
+let selectionDragging = false;
+let moveStartX = 0, moveStartY = 0;
+let moveLayerSnapshot = null;
+
+// Velocity for pressure simulation
+let lastTime = 0;
+let velocity = 0;
+
+// Drag & drop for timeline
+let draggedFrame = null;
+let draggedFrameIdx = -1;
+
+// ── Canvas Setup ───────────────────────────────────────────────
+const wrapper = document.getElementById('canvas-wrapper');
+let layerCanvases = [];    // drawing canvases for each layer
+let onionCanvas, gridCvs, compositeCanvas, overlayCanvas;
+let ctxs = [];             // 2d contexts
+
+function initCanvases() {
+  wrapper.innerHTML = '';
+  wrapper.style.width = canvasW * zoom + 'px';
+  wrapper.style.height = canvasH * zoom + 'px';
+  layerCanvases = [];
+  ctxs = [];
+
+  // Onion skin canvas (bottom)
+  onionCanvas = makeCanvas('onion-canvas', 0);
+  onionCanvas.style.opacity = 1;
+
+  // Layer canvases
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    const c = makeCanvas('layer-' + i, i + 1);
+    layerCanvases.push(c);
+    ctxs.push(c.getContext('2d'));
+    ctxs[i].imageSmoothingEnabled = false;
+    // 새로 생성된 캔버스에 현재 레이어의 표시여부/투명도 재적용
+    // (그렇지 않으면 resize/load 후 화면상 투명도가 100%로 리셋됨)
+    c.style.opacity = (layerOpacity[i] ?? 100) / 100;
+    c.style.visibility = layerVisibility[i] ? 'visible' : 'hidden';
+  }
+
+  // Overlay / preview canvas (for shape drawing ghost)
+  overlayCanvas = makeCanvas('overlay-canvas', NUM_LAYERS + 1);
+  overlayCanvas.style.pointerEvents = 'none';
+
+  // Grid canvas (top)
+  gridCvs = makeCanvas('grid-canvas-el', NUM_LAYERS + 2);
+  gridCvs.style.pointerEvents = 'none';
+  gridCvs.id = 'grid-canvas-el';
+
+  // Composite (used for thumbnail generation)
+  compositeCanvas = document.createElement('canvas');
+  compositeCanvas.width = canvasW;
+  compositeCanvas.height = canvasH;
+
+  setupMouseEvents();
+  drawGrid();
+}
+
+function makeCanvas(id, zIndex) {
+  const c = document.createElement('canvas');
+  c.id = id;
+  c.width = canvasW;
+  c.height = canvasH;
+  c.style.position = 'absolute';
+  c.style.top = 0;
+  c.style.left = 0;
+  c.style.width = (canvasW * zoom) + 'px';
+  c.style.height = (canvasH * zoom) + 'px';
+  c.style.zIndex = zIndex;
+  c.style.imageRendering = 'pixelated';
+  wrapper.appendChild(c);
+  return c;
+}
+
+// ── Frame / Layer Data ─────────────────────────────────────────
+function newBlankFrame() {
+  const layers = [];
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    const td = document.createElement('canvas');
+    td.width = canvasW; td.height = canvasH;
+    layers.push(td.getContext('2d').getImageData(0, 0, canvasW, canvasH));
+  }
+  return { layers };
+}
+
+function saveCurrentFrameData() {
+  if (!frames[currentFrame]) return;
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    frames[currentFrame].layers[i] = ctxs[i].getImageData(0, 0, canvasW, canvasH);
+  }
+}
+
+function loadFrameData(frameIdx) {
+  const f = frames[frameIdx];
+  if (!f) return;
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    ctxs[i].clearRect(0, 0, canvasW, canvasH);
+    if (f.layers[i]) {
+      ctxs[i].putImageData(f.layers[i], 0, 0);
+    }
+  }
+}
+
+function compositeFrame(frameIdx) {
+  const ctx = compositeCanvas.getContext('2d');
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  const f = frames[frameIdx];
+  if (!f) return;
+  for (let i = 0; i < NUM_LAYERS; i++) {
+    if (!layerVisibility[i]) continue;
+    const alpha = layerOpacity[i] / 100;
+    ctx.globalAlpha = alpha;
+    if (f.layers[i]) {
+      const td = document.createElement('canvas');
+      td.width = canvasW; td.height = canvasH;
+      td.getContext('2d').putImageData(f.layers[i], 0, 0);
+      ctx.drawImage(td, 0, 0);
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ── Init ───────────────────────────────────────────────────────
+function init() {
+  frames.push(newBlankFrame());
+  initCanvases();
+  loadFrameData(0);
+  buildPalette();
+  updateColorPreview();
+  updateBrushPreviewDot();
+  renderTimeline();
+  renderLayerPanel();
+  updateStatusBar();
+  updateTimeline();
+  pushHistory();
+}
+
+// ── Palette ───────────────────────────────────────────────────
+const PALETTE = [
+  '#000000','#800000','#008000','#808000',
+  '#000080','#800080','#008080','#c0c0c0',
+  '#808080','#ff0000','#00ff00','#ffff00',
+  '#0000ff','#ff00ff','#00ffff','#ffffff'
+];
+
+function buildPalette() {
+  const pal = document.getElementById('palette');
+  PALETTE.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'pal-color';
+    d.style.background = c;
+    d.title = c;
+    d.addEventListener('click', () => setFGColorDirect(c));
+    d.addEventListener('contextmenu', e => { e.preventDefault(); setBGColor(c); });
+    pal.appendChild(d);
+  });
+}
+
+function setFGColorDirect(c) { fgColor = c; updateColorPreview(); }
+function pickFGColor() {
+  const p = document.getElementById('fg-picker');
+  p.value = fgColor; p.click();
+}
+function setFGColor(c) { fgColor = c; updateColorPreview(); }
+function setBGColor(c) { bgColor = c; updateColorPreview(); }
+
+function updateColorPreview() {
+  document.getElementById('fg-color').style.background = fgColor;
+  document.getElementById('bg-color').style.background = bgColor;
+}
+
+document.getElementById('bg-color').addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const p = document.getElementById('bg-picker');
+  p.value = bgColor; p.click();
+});
+document.getElementById('bg-color').addEventListener('click', e => {
+  const p = document.getElementById('bg-picker');
+  p.value = bgColor; p.click();
+});
+
+// ── Tool Selection ─────────────────────────────────────────────
+function setTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.btn-tool').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('tool-' + tool);
+  if (el) el.classList.add('active');
+  // Update cursor
+  const cursors = {
+    pencil:'crosshair', eraser:'cell', line:'crosshair',
+    rect:'crosshair', circle:'crosshair', fill:'crosshair',
+    text:'text', eyedrop:'crosshair', cut:'crosshair', move:'grab'
+  };
+  wrapper.style.cursor = cursors[tool] || 'crosshair';
+  document.getElementById('status-tool').textContent = 'Tool: ' + tool;
+}
+
+// ── Brush ──────────────────────────────────────────────────────
+function updateBrushSize(v) {
+  brushSize = Math.max(1, Math.min(64, parseInt(v) || 1));
+  document.getElementById('brush-size').value = brushSize;
+  document.getElementById('brush-size-num').value = brushSize;
+  updateBrushPreviewDot();
+}
+
+function updateOpacity(v) {
+  opacity = Math.max(1, Math.min(100, parseInt(v))) / 100;
+  document.getElementById('opacity-val').textContent = Math.round(opacity * 100);
+}
+
+function updateBrushShape(v) { brushShape = v; }
+
+function updateBrushPreviewDot() {
+  const d = document.getElementById('brush-preview-dot');
+  d.innerHTML = '';
+  const s = Math.min(brushSize, 28);
+  const dot = document.createElement('div');
+  dot.style.width = s + 'px';
+  dot.style.height = s + 'px';
+  dot.style.background = fgColor;
+  dot.style.borderRadius = brushShape === 'round' ? '50%' : '0';
+  d.appendChild(dot);
+}
+
+function setBrushPreset(preset) {
+  brushPreset = preset;
+  document.querySelectorAll('[id^=preset-]').forEach(b => b.classList.remove('active'));
+  document.getElementById('preset-' + preset).classList.add('active');
+  if (preset === 'pen') { brushSize = 4; opacity = 1.0; }
+  if (preset === 'pencil') { brushSize = 2; opacity = 0.8; }
+  if (preset === 'airbrush') { brushSize = 20; opacity = 0.3; }
+  document.getElementById('brush-size').value = brushSize;
+  document.getElementById('brush-size-num').value = brushSize;
+  document.getElementById('opacity-slider').value = Math.round(opacity * 100);
+  document.getElementById('opacity-val').textContent = Math.round(opacity * 100);
+  updateBrushPreviewDot();
+}
+
+// ── Mouse / Touch Events ───────────────────────────────────────
+function setupMouseEvents() {
+  // Use the topmost interactive canvas — layerCanvases[currentLayer]
+  // But we need events on the whole wrapper
+  wrapper.addEventListener('mousedown', onMouseDown);
+  wrapper.addEventListener('mousemove', onMouseMove);
+  wrapper.addEventListener('mouseup', onMouseUp);
+  wrapper.addEventListener('mouseleave', onMouseLeave);
+  wrapper.addEventListener('contextmenu', e => e.preventDefault());
+  wrapper.addEventListener('wheel', onWheel, { passive: false });
+}
+
+function getXY(e) {
+  const rect = wrapper.getBoundingClientRect();
+  return {
+    x: Math.floor((e.clientX - rect.left) / zoom),
+    y: Math.floor((e.clientY - rect.top) / zoom)
+  };
+}
+
+function onMouseDown(e) {
+  const {x, y} = getXY(e);
+  isDrawing = true;
+  startX = x; startY = y;
+  lastX = x; lastY = y;
+  lastTime = performance.now();
+  velocity = 0;
+
+  const ctx = ctxs[currentLayer];
+  const color = e.button === 2 ? bgColor : fgColor;
+
+  // Eyedropper: left-click = FG, right-click = BG
+  if (currentTool === 'eyedrop') {
+    const picked = getPixelColor(x, y);
+    if (e.button === 2) {
+      bgColor = picked;
+      document.getElementById('bg-picker').value = picked;
+    } else {
+      fgColor = picked;
+      document.getElementById('fg-picker').value = picked;
+    }
+    updateColorPreview();
+    updateBrushPreviewDot();
+    showToast('\u{1F489} Picked: ' + picked);
+    isDrawing = false; return;
+  }
+  if (currentTool === 'fill') {
+    saveCurrentFrameData();
+    pushHistory();
+    floodFill(ctx, x, y, color);
+    updateThumbnail(currentFrame);
+    renderPreview();
+    isDrawing = false; return;
+  }
+  // Text tool: use inline overlay instead of blocking prompt()
+  if (currentTool === 'text') {
+    isDrawing = false;
+    showTextInput(ctx, x, y, color);
+    return;
+  }
+  if (currentTool === 'cut') {
+    selectionRect = { x, y, w: 0, h: 0 };
+    return;
+  }
+  if (currentTool === 'move') {
+    moveStartX = x; moveStartY = y;
+    moveLayerSnapshot = ctx.getImageData(0, 0, canvasW, canvasH);
+    return;
+  }
+
+  // Shape tools: snapshot for preview
+  if (['line','rect','circle'].includes(currentTool)) {
+    drawingSnapshot = ctx.getImageData(0, 0, canvasW, canvasH);
+  }
+
+  // Start drawing
+  if (currentTool === 'pencil' || currentTool === 'eraser') {
+    drawPoint(ctx, x, y, color, e);
+  }
+}
+
+function onMouseMove(e) {
+  const {x, y} = getXY(e);
+  document.getElementById('status-coords').textContent = `X: ${x}, Y: ${y}`;
+
+  if (!isDrawing) return;
+
+  const now = performance.now();
+  const dt = now - lastTime || 1;
+  const dx = x - lastX, dy = y - lastY;
+  velocity = Math.sqrt(dx*dx + dy*dy) / dt * 10;
+  lastTime = now;
+
+  const color = e.buttons === 2 ? bgColor : fgColor;
+  const ctx = ctxs[currentLayer];
+
+  if (currentTool === 'pencil' || currentTool === 'eraser') {
+    drawLine(ctx, lastX, lastY, x, y, color, e);
+    lastX = x; lastY = y;
+    updateThumbnail(currentFrame);
+    renderPreview();
+    return;
+  }
+
+  if (['line','rect','circle'].includes(currentTool)) {
+    // Restore snapshot, draw preview
+    ctx.putImageData(drawingSnapshot, 0, 0);
+    const ovCtx = overlayCanvas.getContext('2d');
+    ovCtx.clearRect(0, 0, canvasW, canvasH);
+    drawShape(ovCtx, startX, startY, x, y, color, true);
+    return;
+  }
+
+  if (currentTool === 'cut') {
+    selectionRect = { x: Math.min(startX, x), y: Math.min(startY, y),
+                      w: Math.abs(x-startX), h: Math.abs(y-startY) };
+    const ovCtx = overlayCanvas.getContext('2d');
+    ovCtx.clearRect(0, 0, canvasW, canvasH);
+    ovCtx.strokeStyle = '#0078d7';
+    ovCtx.lineWidth = 1;
+    ovCtx.setLineDash([4, 4]);
+    ovCtx.strokeRect(selectionRect.x, selectionRect.y, selectionRect.w, selectionRect.h);
+    ovCtx.setLineDash([]);
+    return;
+  }
+
+  if (currentTool === 'move') {
+    const dx = x - moveStartX, dy = y - moveStartY;
+    ctx.clearRect(0, 0, canvasW, canvasH);
+    ctx.putImageData(moveLayerSnapshot, dx, dy);
+    updateThumbnail(currentFrame);
+    renderPreview();
+    return;
+  }
+}
+
+function onMouseUp(e) {
+  if (!isDrawing) return;
+  isDrawing = false;
+  const {x, y} = getXY(e);
+  const color = e.button === 2 ? bgColor : fgColor;
+  const ctx = ctxs[currentLayer];
+
+  if (['line','rect','circle'].includes(currentTool)) {
+    // Commit shape
+    overlayCanvas.getContext('2d').clearRect(0, 0, canvasW, canvasH);
+    drawShape(ctx, startX, startY, x, y, color, false);
+  }
+
+  if (currentTool === 'cut' && selectionRect && selectionRect.w > 2) {
+    // Apply: keep selection visible, offer delete
+    overlayCanvas.getContext('2d').clearRect(0, 0, canvasW, canvasH);
+    // Copy region
+    const imgd = ctx.getImageData(selectionRect.x, selectionRect.y, selectionRect.w, selectionRect.h);
+    // Delete from layer
+    ctx.clearRect(selectionRect.x, selectionRect.y, selectionRect.w, selectionRect.h);
+    // Put as new paste (simplified: just clear)
+    showToast('✂ Cut region cleared');
+    selectionRect = null;
+  }
+
+  if (currentTool === 'move') {
+    moveLayerSnapshot = null;
+  }
+
+  saveCurrentFrameData();
+  pushHistory();
+  updateThumbnail(currentFrame);
+  renderPreview();
+}
+
+function onMouseLeave(e) {
+  if (isDrawing && (currentTool === 'pencil' || currentTool === 'eraser')) {
+    onMouseUp(e);
+  }
+}
+
+function onWheel(e) {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+    if (e.deltaY < 0) zoomIn(); else zoomOut();
+  }
+}
+
+// ── Drawing Primitives ─────────────────────────────────────────
+function setCtxStyle(ctx, color, isEraser) {
+  const lsEl = document.getElementById('line-style');
+  const ls = lsEl ? lsEl.value : 'solid';
+
+  if (isEraser) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
+    ctx.fillStyle = 'rgba(0,0,0,1)';
+  } else {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = hexToRGBA(color, opacity);
+    ctx.fillStyle = hexToRGBA(color, opacity);
+  }
+
+  // Effective brush size modified by pressure simulation
+  let bs = brushSize;
+  if (brushPreset === 'airbrush') {
+    bs = Math.max(1, brushSize * (1 - velocity * 0.01));
+  } else if (brushPreset === 'pencil') {
+    bs = Math.max(1, brushSize * Math.min(1, 1 / (velocity * 0.05 + 1)));
+  }
+
+  ctx.lineWidth = bs;
+  ctx.lineCap = brushShape === 'round' ? 'round' : 'square';
+  ctx.lineJoin = 'round';
+
+  if (ls === 'dashed') ctx.setLineDash([bs * 3, bs * 2]);
+  else if (ls === 'dotted') ctx.setLineDash([bs, bs * 2]);
+  else ctx.setLineDash([]);
+}
+
+function drawPoint(ctx, x, y, color, e) {
+  const isEraser = currentTool === 'eraser';
+  ctx.save();
+  setCtxStyle(ctx, color, isEraser);
+
+  if (brushPreset === 'airbrush' && !isEraser) {
+    // Airbrush: scattered dots
+    for (let i = 0; i < 8; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const r = Math.random() * brushSize * 0.6;
+      const ax = x + Math.cos(angle) * r;
+      const ay = y + Math.sin(angle) * r;
+      ctx.beginPath();
+      ctx.arc(ax, ay, brushSize * 0.08 + 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else {
+    ctx.beginPath();
+    if (brushShape === 'round') {
+      ctx.arc(x, y, ctx.lineWidth / 2, 0, Math.PI * 2);
+    } else {
+      const h = ctx.lineWidth / 2;
+      ctx.rect(x - h, y - h, ctx.lineWidth, ctx.lineWidth);
+    }
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+function drawLine(ctx, x1, y1, x2, y2, color, e) {
+  const isEraser = currentTool === 'eraser';
+  ctx.save();
+  setCtxStyle(ctx, color, isEraser);
+
+  if (brushPreset === 'airbrush' && !isEraser) {
+    const dist = Math.sqrt((x2-x1)**2+(y2-y1)**2);
+    const steps = Math.max(1, Math.floor(dist));
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const ix = x1 + (x2-x1)*t;
+      const iy = y1 + (y2-y1)*t;
+      for (let j = 0; j < 4; j++) {
+        const a = Math.random()*Math.PI*2;
+        const r = Math.random()*brushSize*0.6;
+        ctx.beginPath();
+        ctx.arc(ix+Math.cos(a)*r, iy+Math.sin(a)*r, brushSize*0.07+0.5, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawShape(ctx, x1, y1, x2, y2, color, preview) {
+  ctx.save();
+  if (preview) {
+    ctx.globalAlpha = 0.7;
+    ctx.setLineDash([4, 4]);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.strokeStyle = hexToRGBA(color, opacity);
+  ctx.fillStyle = hexToRGBA(color, opacity);
+  ctx.lineWidth = brushSize;
+  ctx.lineCap = 'round';
+  if (!preview) ctx.setLineDash([]);
+
+  const w = x2 - x1, h = y2 - y1;
+  const fill = document.getElementById('fill-toggle').checked;
+
+  if (currentTool === 'line') {
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  } else if (currentTool === 'rect') {
+    if (fill) ctx.fillRect(x1, y1, w, h);
+    else ctx.strokeRect(x1, y1, w, h);
+  } else if (currentTool === 'circle') {
+    const rx = Math.abs(w)/2, ry = Math.abs(h)/2;
+    const cx = x1+w/2, cy = y1+h/2;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
+    if (fill) ctx.fill(); else ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// ── Flood Fill ─────────────────────────────────────────────────
+function floodFill(ctx, x, y, fillColor) {
+  const imgd = ctx.getImageData(0, 0, canvasW, canvasH);
+  const data = imgd.data;
+  const idx = (y * canvasW + x) * 4;
+  const targetR = data[idx], targetG = data[idx+1], targetB = data[idx+2], targetA = data[idx+3];
+  const fc = hexToRGBArr(fillColor);
+  if (fc[0]===targetR && fc[1]===targetG && fc[2]===targetB && Math.round(opacity*255)===targetA) return;
+
+  const stack = [[x, y]];
+  const visited = new Uint8Array(canvasW * canvasH);
+
+  function matches(i) {
+    return data[i]===targetR && data[i+1]===targetG && data[i+2]===targetB && data[i+3]===targetA;
+  }
+
+  while (stack.length) {
+    const [cx, cy] = stack.pop();
+    if (cx<0||cx>=canvasW||cy<0||cy>=canvasH) continue;
+    const pi = cy*canvasW+cx;
+    if (visited[pi]) continue;
+    const i = pi*4;
+    if (!matches(i)) continue;
+    visited[pi] = 1;
+    data[i] = fc[0]; data[i+1] = fc[1]; data[i+2] = fc[2];
+    data[i+3] = Math.round(opacity * 255);
+    stack.push([cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]);
+  }
+  ctx.putImageData(imgd, 0, 0);
+}
+
+// ── Text Tool — inline input overlay ─────────────────────────
+function showTextInput(ctx, x, y, color) {
+  // Remove any existing text input overlay
+  const existing = document.getElementById('text-overlay-input');
+  if (existing) existing.remove();
+
+  const fontSize = Math.max(10, brushSize * 4 + 8);
+
+  // Create a real <input> overlaid on the canvas at the clicked position
+  const input = document.createElement('input');
+  input.id = 'text-overlay-input';
+  input.type = 'text';
+  input.placeholder = '텍스트 입력... (Enter)';
+
+  // Position it over the canvas at the clicked spot
+  const wrapperRect = wrapper.getBoundingClientRect();
+  input.style.cssText = `
+    position: fixed;
+    left: ${wrapperRect.left + x * zoom}px;
+    top: ${wrapperRect.top + y * zoom - fontSize}px;
+    min-width: 120px;
+    max-width: 400px;
+    font-size: ${Math.min(fontSize, 28)}px;
+    font-family: monospace;
+    color: ${color};
+    background: rgba(255,255,255,0.85);
+    border: 1px dashed #0078d7;
+    padding: 2px 4px;
+    outline: none;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  `;
+
+  document.body.appendChild(input);
+  input.focus();
+
+  function commitText() {
+    const txt = input.value.trim();
+    input.remove();
+    if (!txt) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = opacity;
+    ctx.fillStyle = color;
+    ctx.font = `${fontSize}px monospace`;
+    ctx.fillText(txt, x, y);
+    ctx.restore();
+    saveCurrentFrameData();
+    pushHistory();
+    updateThumbnail(currentFrame);
+    renderPreview();
+    showToast('✍ Text drawn');
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); commitText(); }
+    if (e.key === 'Escape') { input.remove(); }
+    e.stopPropagation(); // 캔버스 단축키 방지
+  });
+
+  // 외부 클릭 시 커밋 — mousedown으로 잡아야 blur보다 먼저 처리됨
+  function onOutsideClick(e) {
+    if (e.target !== input) {
+      document.removeEventListener('mousedown', onOutsideClick, true);
+      commitText();
+    }
+  }
+  // 약간 지연 후 등록 (현재 mousedown 이벤트와 충돌 방지)
+  setTimeout(() => {
+    document.addEventListener('mousedown', onOutsideClick, true);
+  }, 200);
+}
+
+// ── Eyedropper ────────────────────────────────────────────────
+function getPixelColor(x, y) {
+  // Save current drawing state first so compositeFrame has latest pixels
+  saveCurrentFrameData();
+  compositeFrame(currentFrame);
+  const ctx = compositeCanvas.getContext('2d');
+  const d = ctx.getImageData(x, y, 1, 1).data;
+  // Return hex so it's compatible with color picker, palette, hexToRGBA everywhere
+  const toHex = v => v.toString(16).padStart(2, '0');
+  return `#${toHex(d[0])}${toHex(d[1])}${toHex(d[2])}`;
+}
+
+// ── Grid ──────────────────────────────────────────────────────
+function drawGrid() {
+  const gc = document.getElementById('grid-canvas-el');
+  if (!gc) return;
+  const ctx = gc.getContext('2d');
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  if (!gridVisible) return;
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x <= canvasW; x += gridSize) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvasH); ctx.stroke();
+  }
+  for (let y = 0; y <= canvasH; y += gridSize) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvasW, y); ctx.stroke();
+  }
+  // Center cross
+  ctx.strokeStyle = 'rgba(255,0,0,0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(canvasW/2, 0); ctx.lineTo(canvasW/2, canvasH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, canvasH/2); ctx.lineTo(canvasW, canvasH/2); ctx.stroke();
+}
+
+function toggleGrid() {
+  gridVisible = !gridVisible;
+  document.getElementById('btn-grid').classList.toggle('active', gridVisible);
+  drawGrid();
+}
+
+// ── Lightbox / Onion Skin ─────────────────────────────────────
+function toggleLightbox() {
+  lightboxMode = !lightboxMode;
+  document.getElementById('btn-lightbox').classList.toggle('active', lightboxMode);
+  document.getElementById('onion-toggle').checked = lightboxMode;
+  onionEnabled = lightboxMode;
+  updateOnion();
+}
+
+function updateOnion() {
+  onionEnabled = document.getElementById('onion-toggle').checked;
+  onionPrev = parseInt(document.getElementById('onion-prev').value) || 2;
+  onionNext = parseInt(document.getElementById('onion-next').value) || 1;
+  onionOpacity = parseInt(document.getElementById('onion-opacity').value) / 100;
+  drawOnionSkin();
+}
+
+function drawOnionSkin() {
+  const ctx = onionCanvas.getContext('2d');
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  if (!onionEnabled) return;
+
+  // Previous frames in red
+  for (let i = onionPrev; i >= 1; i--) {
+    const fi = currentFrame - i;
+    if (fi < 0) continue;
+    const alpha = onionOpacity * (1 - (i-1) / (onionPrev+1));
+    const f = frames[fi];
+    if (!f) continue;
+    for (let li = 0; li < NUM_LAYERS; li++) {
+      if (!layerVisibility[li] || !f.layers[li]) continue;
+      const td = document.createElement('canvas');
+      td.width = canvasW; td.height = canvasH;
+      td.getContext('2d').putImageData(f.layers[li], 0, 0);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.globalCompositeOperation = 'source-over';
+      // Tint red
+      ctx.drawImage(td, 0, 0);
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillStyle = '#ff8888';
+      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.restore();
+    }
+  }
+
+  // Next frames in green
+  for (let i = 1; i <= onionNext; i++) {
+    const fi = currentFrame + i;
+    if (fi >= frames.length) continue;
+    const alpha = onionOpacity * (1 - (i-1) / (onionNext+1));
+    const f = frames[fi];
+    if (!f) continue;
+    for (let li = 0; li < NUM_LAYERS; li++) {
+      if (!layerVisibility[li] || !f.layers[li]) continue;
+      const td = document.createElement('canvas');
+      td.width = canvasW; td.height = canvasH;
+      td.getContext('2d').putImageData(f.layers[li], 0, 0);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(td, 0, 0);
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fillStyle = '#88ff88';
+      ctx.fillRect(0, 0, canvasW, canvasH);
+      ctx.restore();
+    }
+  }
+}
+
+// ── Zoom ──────────────────────────────────────────────────────
+function zoomIn() { zoom = Math.min(8, zoom + 0.25); applyZoom(); }
+function zoomOut() { zoom = Math.max(0.1, zoom - 0.25); applyZoom(); }
+function zoomReset() { zoom = 1; applyZoom(); }
+
+function applyZoom() {
+  document.getElementById('zoom-label').textContent = Math.round(zoom*100)+'%';
+  wrapper.style.width = (canvasW * zoom) + 'px';
+  wrapper.style.height = (canvasH * zoom) + 'px';
+  wrapper.querySelectorAll('canvas').forEach(c => {
+    c.style.width = (canvasW * zoom) + 'px';
+    c.style.height = (canvasH * zoom) + 'px';
+  });
+}
+
+// ── Frame Operations ───────────────────────────────────────────
+function addFrame() {
+  saveCurrentFrameData();
+  const f = newBlankFrame();
+  frames.splice(currentFrame + 1, 0, f);
+  selectFrame(currentFrame + 1);
+  renderTimeline();
+  updateTimeline();
+  pushHistory();
+  showToast('✚ Frame added');
+}
+
+function duplicateFrame() {
+  saveCurrentFrameData();
+  const src = frames[currentFrame];
+  const f = { layers: src.layers.map(id => {
+    const td = document.createElement('canvas');
+    td.width = canvasW; td.height = canvasH;
+    const ctx = td.getContext('2d');
+    ctx.putImageData(id, 0, 0);
+    return ctx.getImageData(0, 0, canvasW, canvasH);
+  })};
+  frames.splice(currentFrame + 1, 0, f);
+  selectFrame(currentFrame + 1);
+  renderTimeline();
+  updateTimeline();
+  pushHistory();
+  showToast('⧉ Frame duplicated');
+}
+
+function deleteFrame() {
+  if (frames.length <= 1) { showToast('⚠ Cannot delete last frame'); return; }
+  saveCurrentFrameData();
+  frames.splice(currentFrame, 1);
+  if (currentFrame >= frames.length) currentFrame = frames.length - 1;
+  loadFrameData(currentFrame);
+  renderTimeline();
+  updateTimeline();
+  pushHistory();
+  showToast('✕ Frame deleted');
+}
+
+function insertFrameBefore() {
+  saveCurrentFrameData();
+  const f = newBlankFrame();
+  frames.splice(currentFrame, 0, f);
+  selectFrame(currentFrame);
+  renderTimeline();
+  updateTimeline();
+  pushHistory();
+  showToast('← Frame inserted');
+}
+
+function prevFrame() {
+  if (currentFrame > 0) { saveCurrentFrameData(); selectFrame(currentFrame - 1); }
+}
+function nextFrame() {
+  if (currentFrame < frames.length - 1) { saveCurrentFrameData(); selectFrame(currentFrame + 1); }
+}
+
+function selectFrame(idx) {
+  saveCurrentFrameData();
+  currentFrame = idx;
+  loadFrameData(idx);
+  renderTimeline();
+  updateTimeline();
+  drawOnionSkin();
+  renderPreview();
+}
+
+// ── Playback ──────────────────────────────────────────────────
+function togglePlay() {
+  if (isPlaying) stopPlay(); else startPlay();
+}
+
+function startPlay() {
+  isPlaying = true;
+  document.getElementById('play-btn').textContent = '⏸';
+  document.getElementById('tl-play-btn').textContent = '⏸';
+  playInterval = setInterval(() => {
+    const loop = document.getElementById('loop-toggle').checked;
+    let next = currentFrame + 1;
+    if (next >= frames.length) {
+      if (loop) next = 0;
+      else { stopPlay(); return; }
+    }
+    selectFrame(next);
+  }, 1000 / fps);
+}
+
+function stopPlay() {
+  isPlaying = false;
+  if (playInterval) { clearInterval(playInterval); playInterval = null; }
+  document.getElementById('play-btn').textContent = '▶';
+  document.getElementById('tl-play-btn').textContent = '▶';
+}
+
+function updateFPS(v) {
+  fps = Math.max(1, Math.min(60, parseInt(v) || 12));
+  if (isPlaying) { stopPlay(); startPlay(); }
+  updateTimeline();
+}
+
+// ── Preview ───────────────────────────────────────────────────
+function renderPreview() {
+  const pv = document.getElementById('preview-canvas');
+  const ctx = pv.getContext('2d');
+  const pw = pv.width, ph = pv.height;
+  ctx.clearRect(0, 0, pw, ph);
+  compositeFrame(currentFrame);
+  ctx.drawImage(compositeCanvas, 0, 0, pw, ph);
+}
+
+// ── Layer System ───────────────────────────────────────────────
+function renderLayerPanel() {
+  const list = document.getElementById('layer-list');
+  list.innerHTML = '';
+  for (let i = NUM_LAYERS - 1; i >= 0; i--) {
+    const item = document.createElement('div');
+    item.className = 'layer-item' + (i === currentLayer ? ' active' : '');
+    item.innerHTML = `
+      <span class="layer-vis" title="Toggle visibility" onclick="toggleLayerVis(${i})">${layerVisibility[i] ? '👁' : '🚫'}</span>
+      <span class="layer-name">${layerNames[i]}</span>
+      <input class="layer-opacity" type="number" value="${layerOpacity[i]}" min="0" max="100"
+        title="Opacity" onchange="setLayerOpacity(${i}, this.value)" onclick="event.stopPropagation()">%
+      <span class="layer-reorder">
+        <button class="layer-order-btn" title="Move layer up (위로)" onclick="event.stopPropagation(); moveLayerUp(${i})" ${i === NUM_LAYERS-1 ? 'disabled' : ''}>▲</button>
+        <button class="layer-order-btn" title="Move layer down (아래로)" onclick="event.stopPropagation(); moveLayerDown(${i})" ${i === 0 ? 'disabled' : ''}>▼</button>
+      </span>
+    `;
+    item.addEventListener('click', () => setCurrentLayer(i));
+    item.addEventListener('dblclick', () => renameLayer(i));
+    list.appendChild(item);
+  }
+}
+
+// 레이어 이름 변경
+function renameLayer(i) {
+  const name = prompt('레이어 이름 / Layer name:', layerNames[i]);
+  if (name && name.trim()) {
+    layerNames[i] = name.trim();
+    renderLayerPanel();
+  }
+}
+
+// ── 레이어 순서 변경 (모든 프레임 동기 적용) ───────────────────
+// index가 클수록 위쪽(z-index 높음). a, b를 서로 교환한다.
+function swapLayers(a, b) {
+  if (a < 0 || b < 0 || a >= NUM_LAYERS || b >= NUM_LAYERS || a === b) return;
+
+  // 현재 캔버스 → frames[] 동기화 후, 모든 프레임에서 레이어 데이터 교환
+  saveCurrentFrameData();
+  frames.forEach(f => {
+    const tmp = f.layers[a];
+    f.layers[a] = f.layers[b];
+    f.layers[b] = tmp;
+  });
+
+  // 레이어 속성(이름/표시여부/투명도) 교환
+  [layerNames[a], layerNames[b]]           = [layerNames[b], layerNames[a]];
+  [layerVisibility[a], layerVisibility[b]] = [layerVisibility[b], layerVisibility[a]];
+  [layerOpacity[a], layerOpacity[b]]       = [layerOpacity[b], layerOpacity[a]];
+
+  // 캔버스 DOM의 z-index 교환 (실제 그려지는 순서)
+  const za = layerCanvases[a].style.zIndex;
+  const zb = layerCanvases[b].style.zIndex;
+  layerCanvases[a].style.zIndex = zb;
+  layerCanvases[b].style.zIndex = za;
+
+  // 현재 선택된 레이어가 이동했다면 인덱스도 같이 따라가기
+  if (currentLayer === a) currentLayer = b;
+  else if (currentLayer === b) currentLayer = a;
+
+  // 화면 갱신: 현재 프레임 다시 로드, 패널/타임라인/미리보기/그리드 갱신
+  loadFrameData(currentFrame);
+  layerCanvases.forEach((c, idx) => {
+    c.style.visibility = layerVisibility[idx] ? 'visible' : 'hidden';
+    c.style.opacity = layerOpacity[idx] / 100;
+  });
+  renderLayerPanel();
+  updateThumbnail(currentFrame);
+  renderPreview();
+  drawOnionSkin();
+  pushHistory();
+  showToast('🔀 레이어 순서 변경됨');
+}
+
+function moveLayerUp(i)   { swapLayers(i, i + 1); }
+function moveLayerDown(i) { swapLayers(i, i - 1); }
+
+function setCurrentLayer(i) {
+  currentLayer = i;
+  renderLayerPanel();
+  document.getElementById('status-layer').textContent = 'Layer: ' + (i + 1);
+}
+
+function toggleLayerVis(i) {
+  layerVisibility[i] = !layerVisibility[i];
+  layerCanvases[i].style.visibility = layerVisibility[i] ? 'visible' : 'hidden';
+  renderLayerPanel();
+  renderPreview();
+}
+
+function setLayerOpacity(i, v) {
+  let n = parseInt(v);
+  if (isNaN(n)) n = 100;          // 빈 값/숫자가 아닌 경우만 기본값
+  layerOpacity[i] = Math.max(0, Math.min(100, n));
+  layerCanvases[i].style.opacity = layerOpacity[i] / 100;
+  // 입력란이 범위를 벗어난 값으로 남아있지 않도록 정규화된 값 재반영
+  renderLayerPanel();
+  renderPreview();
+  updateThumbnail(currentFrame);
+}
+
+function addLayer() { showToast('⚠ Max 5 layers supported'); }
+
+function deleteLayer() {
+  const ctx = ctxs[currentLayer];
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  saveCurrentFrameData();
+  pushHistory();
+  renderPreview();
+  updateThumbnail(currentFrame);
+  showToast('🗑 Layer cleared');
+}
+
+function mergeLayerDown() {
+  if (currentLayer === 0) { showToast('⚠ Already at bottom layer'); return; }
+  const srcCtx = ctxs[currentLayer];
+  const dstCtx = ctxs[currentLayer - 1];
+  dstCtx.drawImage(layerCanvases[currentLayer], 0, 0);
+  srcCtx.clearRect(0, 0, canvasW, canvasH);
+  saveCurrentFrameData();
+  pushHistory();
+  updateThumbnail(currentFrame);
+  renderPreview();
+  showToast('↓ Layer merged down');
+}
+
+// ── Transform ─────────────────────────────────────────────────
+function rotateFrame() {
+  const ctx = ctxs[currentLayer];
+  const imgd = ctx.getImageData(0, 0, canvasW, canvasH);
+  const td = document.createElement('canvas');
+  td.width = canvasW; td.height = canvasH;
+  td.getContext('2d').putImageData(imgd, 0, 0);
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  ctx.save();
+  ctx.translate(canvasW/2, canvasH/2);
+  ctx.rotate(Math.PI/2);
+  ctx.drawImage(td, -canvasH/2, -canvasW/2, canvasH, canvasW);
+  ctx.restore();
+  saveCurrentFrameData();
+  pushHistory();
+  updateThumbnail(currentFrame);
+  renderPreview();
+}
+
+function flipFrame(dir) {
+  const ctx = ctxs[currentLayer];
+  const imgd = ctx.getImageData(0, 0, canvasW, canvasH);
+  const td = document.createElement('canvas');
+  td.width = canvasW; td.height = canvasH;
+  td.getContext('2d').putImageData(imgd, 0, 0);
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  ctx.save();
+  if (dir === 'h') { ctx.translate(canvasW, 0); ctx.scale(-1, 1); }
+  else { ctx.translate(0, canvasH); ctx.scale(1, -1); }
+  ctx.drawImage(td, 0, 0);
+  ctx.restore();
+  saveCurrentFrameData();
+  pushHistory();
+  updateThumbnail(currentFrame);
+  renderPreview();
+}
+
+function clearLayer() {
+  if (!confirm('Clear current layer? / 현재 레이어를 지우시겠습니까?')) return;
+  ctxs[currentLayer].clearRect(0, 0, canvasW, canvasH);
+  saveCurrentFrameData();
+  pushHistory();
+  updateThumbnail(currentFrame);
+  renderPreview();
+}
+
+// ── Canvas Resize ─────────────────────────────────────────────
+function resizeCanvas() {
+  const nw = parseInt(document.getElementById('canvas-w').value);
+  const nh = parseInt(document.getElementById('canvas-h').value);
+  if (!nw||!nh||nw<10||nh<10) return;
+  if (!confirm(`Resize canvas to ${nw}×${nh}? / 캔버스 크기를 변경하시겠습니까?`)) return;
+
+  saveCurrentFrameData();
+  // Resize all frame data
+  frames.forEach(f => {
+    f.layers = f.layers.map(id => {
+      const td = document.createElement('canvas');
+      td.width = nw; td.height = nh;
+      const ctx = td.getContext('2d');
+      const src = document.createElement('canvas');
+      src.width = canvasW; src.height = canvasH;
+      src.getContext('2d').putImageData(id, 0, 0);
+      ctx.drawImage(src, 0, 0);
+      return ctx.getImageData(0, 0, nw, nh);
+    });
+  });
+  canvasW = nw; canvasH = nh;
+  compositeCanvas.width = nw; compositeCanvas.height = nh;
+  initCanvases();
+  loadFrameData(currentFrame);
+  applyZoom();
+  renderTimeline();
+  drawGrid();
+  document.getElementById('status-size').textContent = `${nw} × ${nh}`;
+  showToast(`📐 Resized to ${nw}×${nh}`);
+}
+
+// ── History ───────────────────────────────────────────────────
+function pushHistory() {
+  saveCurrentFrameData();
+  const snapshot = {
+    frames: frames.map(f => ({
+      layers: f.layers.map(id => {
+        const td = document.createElement('canvas');
+        td.width = canvasW; td.height = canvasH;
+        td.getContext('2d').putImageData(id, 0, 0);
+        return td.getContext('2d').getImageData(0, 0, canvasW, canvasH);
+      })
+    })),
+    currentFrame,
+    currentLayer
+  };
+  // Trim future
+  history = history.slice(0, historyIndex + 1);
+  history.push(snapshot);
+  if (history.length > MAX_HISTORY) history.shift();
+  historyIndex = history.length - 1;
+  updateUndoRedoBtns();
+}
+
+function undo() {
+  if (historyIndex <= 0) { showToast('⚠ Nothing to undo'); return; }
+  historyIndex--;
+  applyHistory(history[historyIndex]);
+  showToast('↩ Undo');
+}
+
+function redo() {
+  if (historyIndex >= history.length - 1) { showToast('⚠ Nothing to redo'); return; }
+  historyIndex++;
+  applyHistory(history[historyIndex]);
+  showToast('↪ Redo');
+}
+
+function applyHistory(snap) {
+  frames = snap.frames.map(f => ({
+    layers: f.layers.map(id => {
+      const td = document.createElement('canvas');
+      td.width = canvasW; td.height = canvasH;
+      td.getContext('2d').putImageData(id, 0, 0);
+      return td.getContext('2d').getImageData(0, 0, canvasW, canvasH);
+    })
+  }));
+  currentFrame = snap.currentFrame;
+  currentLayer = snap.currentLayer;
+  loadFrameData(currentFrame);
+  renderTimeline();
+  updateTimeline();
+  renderPreview();
+  drawOnionSkin();
+  updateUndoRedoBtns();
+}
+
+function updateUndoRedoBtns() {
+  document.getElementById('btn-undo').disabled = historyIndex <= 0;
+  document.getElementById('btn-redo').disabled = historyIndex >= history.length - 1;
+  document.getElementById('status-undo').textContent = `History: ${historyIndex+1}/${history.length}`;
+}
+
+// ── Timeline ──────────────────────────────────────────────────
+function renderTimeline() {
+  const tl = document.getElementById('timeline-scroll');
+  tl.innerHTML = '';
+
+  frames.forEach((f, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'frame-thumb' + (i === currentFrame ? ' selected' : '');
+    thumb.draggable = true;
+
+    const c = document.createElement('canvas');
+    c.width = 60; c.height = 46;
+    thumb.appendChild(c);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'thumb-label';
+    lbl.textContent = `#${i+1}`;
+    thumb.appendChild(lbl);
+
+    thumb.addEventListener('click', () => selectFrame(i));
+    thumb.addEventListener('dblclick', () => {
+      const name = prompt('Frame label:', `#${i+1}`);
+      if (name) { lbl.textContent = name; }
+    });
+
+    // Drag & drop
+    thumb.addEventListener('dragstart', e => {
+      draggedFrame = thumb;
+      draggedFrameIdx = i;
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    thumb.addEventListener('dragover', e => {
+      e.preventDefault();
+      thumb.classList.add('drag-over');
+    });
+    thumb.addEventListener('dragleave', () => thumb.classList.remove('drag-over'));
+    thumb.addEventListener('drop', e => {
+      e.preventDefault();
+      thumb.classList.remove('drag-over');
+      if (draggedFrameIdx !== i) {
+        saveCurrentFrameData();
+        const moved = frames.splice(draggedFrameIdx, 1)[0];
+        frames.splice(i, 0, moved);
+        currentFrame = i;
+        loadFrameData(currentFrame);
+        renderTimeline();
+        updateThumbnails();
+        pushHistory();
+      }
+    });
+
+    tl.appendChild(thumb);
+    // Draw thumbnail
+    drawThumbnail(c, i);
+  });
+
+  // Scroll to current
+  const selectedEl = tl.children[currentFrame];
+  if (selectedEl) selectedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+}
+
+function drawThumbnail(canvas, frameIdx) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const f = frames[frameIdx];
+  if (!f) return;
+  // Checker pattern
+  ctx.fillStyle = '#aaa';
+  ctx.fillRect(0,0,canvas.width, canvas.height);
+  for (let x=0;x<canvas.width;x+=6) for (let y=0;y<canvas.height;y+=6) {
+    if ((Math.floor(x/6)+Math.floor(y/6))%2===0) { ctx.fillStyle='#ddd'; ctx.fillRect(x,y,6,6); }
+  }
+  for (let li = 0; li < NUM_LAYERS; li++) {
+    if (!layerVisibility[li] || !f.layers[li]) continue;
+    const td = document.createElement('canvas');
+    td.width = canvasW; td.height = canvasH;
+    td.getContext('2d').putImageData(f.layers[li], 0, 0);
+    ctx.save();
+    ctx.globalAlpha = layerOpacity[li] / 100;
+    ctx.drawImage(td, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+  }
+}
+
+function updateThumbnail(frameIdx) {
+  const tl = document.getElementById('timeline-scroll');
+  const thumb = tl.children[frameIdx];
+  if (!thumb) return;
+  const c = thumb.querySelector('canvas');
+  if (c) drawThumbnail(c, frameIdx);
+}
+
+function updateThumbnails() {
+  frames.forEach((_, i) => updateThumbnail(i));
+}
+
+function updateTimeline() {
+  document.getElementById('frame-counter').textContent =
+    `${currentFrame+1} / ${frames.length}`;
+  document.getElementById('duration-label').textContent =
+    (frames.length / fps).toFixed(1) + 's';
+  document.getElementById('status-frame').textContent = `Frame: ${currentFrame+1}`;
+}
+
+// ── Status Bar ────────────────────────────────────────────────
+function updateStatusBar() {
+  document.getElementById('status-size').textContent = `${canvasW} × ${canvasH}`;
+}
+
+// ── Export ────────────────────────────────────────────────────
+function openExport() {
+  document.getElementById('export-modal').classList.add('show');
+}
+function closeExport() {
+  document.getElementById('export-modal').classList.remove('show');
+}
+
+function getExportFrames() {
+  saveCurrentFrameData();
+  const scale = parseInt(document.getElementById('export-scale').value) || 2;
+  const efps = parseInt(document.getElementById('export-fps').value) || 12;
+  const canvases = [];
+
+  frames.forEach((f, fi) => {
+    const td = document.createElement('canvas');
+    td.width = canvasW * scale;
+    td.height = canvasH * scale;
+    const ctx = td.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    for (let li = 0; li < NUM_LAYERS; li++) {
+      if (!layerVisibility[li] || !f.layers[li]) continue;
+      const src = document.createElement('canvas');
+      src.width = canvasW; src.height = canvasH;
+      src.getContext('2d').putImageData(f.layers[li], 0, 0);
+      ctx.save();
+      ctx.globalAlpha = layerOpacity[li] / 100;
+      ctx.drawImage(src, 0, 0, canvasW * scale, canvasH * scale);
+      ctx.restore();
+    }
+    canvases.push(td);
+  });
+  return { canvases, scale, efps };
+}
+
+function setExportStatus(msg) {
+  document.getElementById('export-status').textContent = msg;
+}
+function setExportProgress(pct) {
+  const bar = document.getElementById('export-progress');
+  bar.style.display = 'block';
+  document.getElementById('export-progress-bar').style.width = pct + '%';
+  document.getElementById('export-progress-text').textContent = Math.round(pct) + '%';
+}
+
+function exportGIF() {
+  setExportStatus('⏳ Generating GIF... (gifshot)');
+  setExportProgress(10);
+  const { canvases, efps } = getExportFrames();
+  const loop = document.getElementById('export-loop').checked;
+
+  setTimeout(() => {
+    const imageDataArray = canvases.map(c => c.toDataURL('image/png'));
+    setExportProgress(40);
+    gifshot.createGIF({
+      images: imageDataArray,
+      gifWidth: canvases[0].width,
+      gifHeight: canvases[0].height,
+      interval: 1 / efps,
+      numFrames: canvases.length,
+      frameDuration: 1,
+      numWorkers: 2,
+      progressCallback: p => setExportProgress(40 + p * 55),
+    }, result => {
+      if (!result.error) {
+        setExportProgress(100);
+        const a = document.createElement('a');
+        a.href = result.image;
+        a.download = 'blackstar_animation.gif';
+        a.click();
+        setExportStatus('✅ GIF exported! / GIF 내보내기 완료!');
+      } else {
+        setExportStatus('❌ Error: ' + result.errorMsg);
+      }
+    });
+  }, 50);
+}
+
+function exportPNG() {
+  setExportStatus('⏳ Exporting PNG sequence...');
+  const { canvases } = getExportFrames();
+
+  canvases.forEach((c, i) => {
+    setExportProgress((i / canvases.length) * 100);
+    const a = document.createElement('a');
+    a.href = c.toDataURL('image/png');
+    a.download = `blackstar_frame_${String(i+1).padStart(4,'0')}.png`;
+    a.click();
+  });
+  setExportProgress(100);
+  setExportStatus(`✅ Exported ${canvases.length} PNG frames`);
+}
+
+function exportSpriteSheet() {
+  setExportStatus('⏳ Creating sprite sheet...');
+  const { canvases, scale } = getExportFrames();
+  const cols = Math.ceil(Math.sqrt(canvases.length));
+  const rows = Math.ceil(canvases.length / cols);
+  const fw = canvasW * scale, fh = canvasH * scale;
+
+  const sheet = document.createElement('canvas');
+  sheet.width = fw * cols;
+  sheet.height = fh * rows;
+  const ctx = sheet.getContext('2d');
+
+  canvases.forEach((c, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    ctx.drawImage(c, col * fw, row * fh);
+    setExportProgress(((i+1) / canvases.length) * 90);
+  });
+
+  setExportProgress(100);
+  const a = document.createElement('a');
+  a.href = sheet.toDataURL('image/png');
+  a.download = 'blackstar_spritesheet.png';
+  a.click();
+  setExportStatus(`✅ Sprite sheet: ${sheet.width}×${sheet.height}px (${cols}×${rows} grid)`);
+}
+
+function exportWebM() {
+  setExportStatus('⏳ Recording WebM video...');
+  const { canvases, efps } = getExportFrames();
+  const fw = canvases[0].width, fh = canvases[0].height;
+
+  const offscreen = document.createElement('canvas');
+  offscreen.width = fw; offscreen.height = fh;
+  const ctx = offscreen.getContext('2d');
+
+  const stream = offscreen.captureStream(efps);
+  const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+  const chunks = [];
+  recorder.ondataavailable = e => chunks.push(e.data);
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'blackstar_animation.webm'; a.click();
+    URL.revokeObjectURL(url);
+    setExportProgress(100);
+    setExportStatus('✅ WebM exported!');
+  };
+
+  recorder.start();
+  const loop = document.getElementById('export-loop').checked;
+  const delay = 1000 / efps;
+  let fi = 0;
+
+  function nextExportFrame() {
+    if (fi >= canvases.length) { recorder.stop(); return; }
+    ctx.clearRect(0,0,fw,fh);
+    ctx.drawImage(canvases[fi], 0, 0);
+    setExportProgress((fi / canvases.length) * 90);
+    fi++;
+    setTimeout(nextExportFrame, delay);
+  }
+  setTimeout(nextExportFrame, 0);
+}
+
+// ── Project Save / Load ───────────────────────────────────────
+// ── 빈 ImageData 생성 헬퍼 ────────────────────────────────────
+function blankImageData(w, h) {
+  const td = document.createElement('canvas');
+  td.width = w; td.height = h;
+  return td.getContext('2d').getImageData(0, 0, w, h);
+}
+
+// ── ImageData → dataURL (null-safe) ──────────────────────────
+function imageDataToURL(id, w, h) {
+  if (!id) return null;
+  const td = document.createElement('canvas');
+  td.width = w; td.height = h;
+  td.getContext('2d').putImageData(id, 0, 0);
+  return td.toDataURL('image/png');
+}
+
+// ── 저장 ──────────────────────────────────────────────────────
+function saveProject() {
+  saveCurrentFrameData();          // 현재 캔버스 → frames[] 동기화
+  showToast('⏳ 저장 중...');
+
+  // 비동기로 처리해서 UI freeze 방지
+  setTimeout(() => {
+    try {
+      const project = {
+        version: '1.1',
+        canvasW, canvasH, fps,
+        layerNames, layerVisibility, layerOpacity,
+        frames: frames.map(f => ({
+          layers: f.layers.map(id => imageDataToURL(id, canvasW, canvasH))
+        }))
+      };
+      const json = JSON.stringify(project);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = 'blackstar_project.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('💾 저장 완료! (' + frames.length + ' frames)');
+    } catch (err) {
+      showToast('❌ 저장 오류: ' + err.message);
+      console.error('saveProject error:', err);
+    }
+  }, 30);
+}
+
+// ── 파일 열기 ────────────────────────────────────────────────
+function openFile() {
+  const input = document.createElement('input');
+  input.type  = 'file';
+  input.accept = '.json,image/*';
+  document.body.appendChild(input);
+  input.onchange = e => {
+    document.body.removeChild(input);
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.name.toLowerCase().endsWith('.json')) {
+      // ── JSON 프로젝트 로드
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          loadProject(parsed);
+        } catch (err) {
+          showToast('❌ JSON 파싱 오류: ' + err.message);
+          console.error('openFile JSON error:', err);
+        }
+      };
+      reader.onerror = () => showToast('❌ 파일 읽기 실패');
+      reader.readAsText(file);
+    } else {
+      // ── 이미지 파일 → 현재 레이어에 임포트
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+          saveCurrentFrameData();
+          ctxs[currentLayer].drawImage(img, 0, 0, canvasW, canvasH);
+          saveCurrentFrameData();
+          pushHistory();
+          updateThumbnail(currentFrame);
+          renderPreview();
+          showToast('🖼 이미지 임포트 완료');
+        };
+        img.onerror = () => showToast('❌ 이미지 로드 실패');
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  input.click();
+}
+
+// ── 로드 ─────────────────────────────────────────────────────
+function loadProject(p) {
+  if (!p || !Array.isArray(p.frames) || p.frames.length === 0) {
+    showToast('❌ 잘못된 프로젝트 파일'); return;
+  }
+  stopPlay();
+  showToast('⏳ 불러오는 중...');
+
+  // 설정 복원
+  canvasW = p.canvasW || 500;
+  canvasH = p.canvasH || 380;
+  fps     = p.fps     || 12;
+  layerNames      = Array.isArray(p.layerNames)      ? p.layerNames      : layerNames;
+  layerVisibility = Array.isArray(p.layerVisibility) ? p.layerVisibility : layerVisibility;
+  layerOpacity    = Array.isArray(p.layerOpacity)    ? p.layerOpacity    : layerOpacity;
+  document.getElementById('canvas-w').value  = canvasW;
+  document.getElementById('canvas-h').value  = canvasH;
+  document.getElementById('fps-input').value = fps;
+
+  // 각 프레임의 각 레이어를 Image로 로드하는 Promise 배열 구성
+  // layerStore[frameIdx][layerIdx] = ImageData (로드 완료 후)
+  const layerStore = p.frames.map(() =>
+    Array.from({ length: NUM_LAYERS }, () => blankImageData(canvasW, canvasH))
+  );
+
+  const promises = [];
+
+  p.frames.forEach((f, fi) => {
+    const layerList = Array.isArray(f.layers) ? f.layers : [];
+    for (let li = 0; li < NUM_LAYERS; li++) {
+      const dataURL = layerList[li];
+      if (!dataURL || typeof dataURL !== 'string' || !dataURL.startsWith('data:')) {
+        // 빈 레이어 — 이미 blankImageData로 초기화됨
+        continue;
+      }
+      // 클로저로 fi, li 캡처
+      const prom = new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const td = document.createElement('canvas');
+          td.width = canvasW; td.height = canvasH;
+          td.getContext('2d').drawImage(img, 0, 0, canvasW, canvasH);
+          layerStore[fi][li] = td.getContext('2d').getImageData(0, 0, canvasW, canvasH);
+          resolve();
+        };
+        img.onerror = () => {
+          console.warn(`Layer load failed: frame ${fi}, layer ${li}`);
+          resolve(); // 실패해도 계속 진행
+        };
+        img.src = dataURL;
+      });
+      promises.push(prom);
+    }
+  });
+
+  Promise.all(promises).then(() => {
+    // 모든 이미지 로드 완료 → frames[] 재구성
+    frames = layerStore.map(layers => ({ layers }));
+    currentFrame = 0;
+    currentLayer = 0;
+
+    compositeCanvas.width  = canvasW;
+    compositeCanvas.height = canvasH;
+
+    initCanvases();        // 캔버스 DOM 재생성 + 이벤트 재등록
+    loadFrameData(0);      // 첫 프레임 렌더
+    applyZoom();
+    renderTimeline();
+    renderLayerPanel();
+    updateTimeline();
+    updateStatusBar();
+    drawGrid();
+    drawOnionSkin();
+    renderPreview();
+    history = [];
+    historyIndex = -1;
+    pushHistory();
+    showToast('📂 로드 완료! ' + frames.length + ' frames');
+  }).catch(err => {
+    showToast('❌ 로드 오류: ' + err.message);
+    console.error('loadProject error:', err);
+  });
+}
+
+function newProject() {
+  if (!confirm('Start new project? All unsaved work will be lost.\n새 프로젝트를 시작하시겠습니까?')) return;
+  stopPlay();
+  frames = [newBlankFrame()];
+  currentFrame = 0;
+  history = [];
+  historyIndex = -1;
+  loadFrameData(0);
+  renderTimeline();
+  updateTimeline();
+  renderPreview();
+  pushHistory();
+  showToast('📄 New project');
+}
+
+// ── Utilities ─────────────────────────────────────────────────
+function hexToRGBA(hex, a) {
+  const r = hexToRGBArr(hex);
+  return `rgba(${r[0]},${r[1]},${r[2]},${a})`;
+}
+
+function hexToRGBArr(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex, 16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ── Keyboard Shortcuts ─────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const k = e.key.toLowerCase();
+  if (e.ctrlKey || e.metaKey) {
+    if (k === 'z') { e.preventDefault(); undo(); return; }
+    if (k === 'y') { e.preventDefault(); redo(); return; }
+    if (k === 's') { e.preventDefault(); saveProject(); return; }
+  }
+  const toolMap = { p:'pencil', e:'eraser', l:'line', r:'rect', c:'circle',
+                    f:'fill', t:'text', i:'eyedrop', s:'cut', m:'move' };
+  if (toolMap[k]) setTool(toolMap[k]);
+  if (k === 'arrowleft') prevFrame();
+  if (k === 'arrowright') nextFrame();
+  if (k === ' ') { e.preventDefault(); togglePlay(); }
+  if (k === '[') updateBrushSize(brushSize - 1);
+  if (k === ']') updateBrushSize(brushSize + 1);
+  if (k === 'g') toggleGrid();
+  if (k === 'delete') clearLayer();
+  // Number keys for frames
+  if (k >= '1' && k <= '9' && !e.ctrlKey) {
+    const fi = parseInt(k) - 1;
+    if (fi < frames.length) selectFrame(fi);
+  }
+});
+
+// ── Preview canvas: update on idle ────────────────────────────
+setInterval(renderPreview, 200);
+
+// ── Animate preview continuously ──────────────────────────────
+setInterval(() => {
+  if (isPlaying) renderPreview();
+}, 16);
+
+// ── Start it up ───────────────────────────────────────────────
+window.addEventListener('load', () => {
+  init();
+  showToast('🌟 블랙스타 BLACKSTAR ★ 시작! Animation Studio loaded!');
+  // Set initial brush preview
+  setTimeout(updateBrushPreviewDot, 100);
+});
+</script>
+</body>
+</html>
